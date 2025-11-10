@@ -32,7 +32,7 @@ export default class GameScene extends Phaser.Scene {
       },
     });
 
-    this.car = this.add.image(W / 2, H * 0.85, 'car');
+    this.car = this.add.image(W / 2, H * 0.8, 'car');
     this.car.setScale(0.5);
 
     this.cursors = this.input.keyboard.createCursorKeys();
