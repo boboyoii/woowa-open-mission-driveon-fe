@@ -1,6 +1,12 @@
+import Player from '../objects/Player.js';
+
 export default class GameScene extends Phaser.Scene {
   constructor() {
     super('GameScene');
+  }
+
+  init(data) {
+    this.playerName = data.playerName;
   }
 
   preload() {
@@ -32,26 +38,23 @@ export default class GameScene extends Phaser.Scene {
       },
     });
 
-    this.car = this.add.image(W / 2, H * 0.8, 'car');
-    this.car.setScale(0.5);
+    this.player = new Player(this, W / 2, H * 0.8, 'car', this.playerName);
 
     this.cursors = this.input.keyboard.createCursorKeys();
   }
 
   update() {
-    if (this.cursors.left.isDown) this.car.x -= 5;
-    if (this.cursors.right.isDown) this.car.x += 5;
+    if (this.cursors.left.isDown) this.player.sprite.x -= 5;
+    if (this.cursors.right.isDown) this.player.sprite.x += 5;
 
     const W = this.scale.width;
-    const half = this.car.displayWidth / 2;
-
+    const half = this.player.sprite.displayWidth / 2;
     const roadLeft = W * this.roadLeftRatio;
     const roadRight = W * this.roadRightRatio;
-
     const margin = 2;
 
-    this.car.x = Phaser.Math.Clamp(
-      this.car.x,
+    this.player.sprite.x = Phaser.Math.Clamp(
+      this.player.sprite.x,
       roadLeft + half + margin,
       roadRight - half - margin
     );
