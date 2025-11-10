@@ -6,6 +6,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   init(data) {
+    this.input.keyboard.enabled = true;
     this.playerName = data.playerName;
   }
 
@@ -38,7 +39,7 @@ export default class GameScene extends Phaser.Scene {
       },
     });
 
-    this.player = new Player(this, W / 2, H * 0.8, 'car', this.playerName);
+    this.player = new Player(this, W / 2, H * 0.85, 'car', this.playerName);
 
     this.cursors = this.input.keyboard.createCursorKeys();
   }
