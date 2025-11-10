@@ -13,6 +13,9 @@ export default class GameScene extends Phaser.Scene {
   create() {
     const { width: W, height: H } = this.scale;
 
+    this.roadLeftRatio = 0.16;
+    this.roadRightRatio = 0.84;
+
     this.totalRoads = 23;
     this.currentRoadIndex = 1;
     this.bg = this.add.image(W / 2, H / 2, 'road_1');
@@ -38,5 +41,19 @@ export default class GameScene extends Phaser.Scene {
   update() {
     if (this.cursors.left.isDown) this.car.x -= 5;
     if (this.cursors.right.isDown) this.car.x += 5;
+
+    const W = this.scale.width;
+    const half = this.car.displayWidth / 2;
+
+    const roadLeft = W * this.roadLeftRatio;
+    const roadRight = W * this.roadRightRatio;
+
+    const margin = 2;
+
+    this.car.x = Phaser.Math.Clamp(
+      this.car.x,
+      roadLeft + half + margin,
+      roadRight - half - margin
+    );
   }
 }
