@@ -1,5 +1,6 @@
-import { preloadCarImage, preloadRoadImages, roadKey } from '../core/assets.js';
+import { preloadCarImage, preloadRoadImages } from '../core/assets.js';
 import { ASSET, GAME_CONFIG, SCENE } from '../core/constants.js';
+import { RoadManager } from '../managers/RoadManager.js';
 import Player from '../objects/Player.js';
 
 export default class PlayScene extends Phaser.Scene {
@@ -20,21 +21,9 @@ export default class PlayScene extends Phaser.Scene {
   create() {
     const { width: W, height: H } = this.scale;
 
-    this.currentRoadIndex = 1;
-    this.bg = this.add.image(W / 2, H / 2, roadKey(this.currentRoadIndex));
-
-    this.bg.setDisplaySize(W, H).setDepth(-10);
-
-    this.time.addEvent({
-      delay: GAME_CONFIG.road.swapMs,
-      loop: true,
-      callback: () => {
-        this.currentRoadIndex++;
-        if (this.currentRoadIndex > GAME_CONFIG.road.count)
-          this.currentRoadIndex = 1;
-        this.bg.setTexture(roadKey(this.currentRoadIndex));
-      },
-    });
+    this.roadManager = new RoadManager(this);
+    this.roadManager.initRoad();
+    this.roadManager.animateRoad();
 
     this.player = new Player(this, W / 2, H * 0.85, ASSET.CAR, this.playerName);
 
@@ -48,26 +37,24 @@ export default class PlayScene extends Phaser.Scene {
 
       this.scene.start('ResultScene', {
         playerName: this.playerName,
-        roadIndex: this.currentRoadIndex,
-        carX: this.player.sprite.x,
-        carY: this.player.sprite.y,
+        roadIndex: this.roadManager.getRoadIndex(),
+        carX: this.player.car.x,
+        carY: this.player.car.y,
       });
     });
   }
 
   update() {
     if (this.cursors.left.isDown)
-      this.player.sprite.x -= GAME_CONFIG.player.moveSpeed;
+      this.player.car.x -= GAME_CONFIG.player.moveSpeed;
     if (this.cursors.right.isDown)
-      this.player.sprite.x += GAME_CONFIG.player.moveSpeed;
+      this.player.car.x += GAME_CONFIG.player.moveSpeed;
 
-    const W = this.scale.width;
-    const half = this.player.sprite.displayWidth / 2;
-    const roadLeft = W * GAME_CONFIG.road.leftRatio;
-    const roadRight = W * GAME_CONFIG.road.rightRatio;
+    const { left: roadLeft, right: roadRight } = this.roadManager.getBounds();
+    const half = this.player.car.displayWidth / 2;
 
-    this.player.sprite.x = Phaser.Math.Clamp(
-      this.player.sprite.x,
+    this.player.car.x = Phaser.Math.Clamp(
+      this.player.car.x,
       roadLeft + half + GAME_CONFIG.road.clampMargin,
       roadRight - half - GAME_CONFIG.road.clampMargin
     );
