@@ -1,7 +1,8 @@
-// src/scenes/GameOverScene.js
-export default class GameOverScene extends Phaser.Scene {
+import { SCENE } from '../core/constants';
+
+export default class ResultScene extends Phaser.Scene {
   constructor() {
-    super('GameOverScene');
+    super(SCENE.RESULT);
   }
 
   init(data) {
@@ -55,7 +56,7 @@ export default class GameOverScene extends Phaser.Scene {
     };
 
     makeBtn(W / 2 - 110, H * 0.6, 'HOME', () => {
-      this.scene.start('StartScene');
+      this.scene.start(SCENE.HOME);
     });
 
     this.add.text(20, 20, this.playerName, {

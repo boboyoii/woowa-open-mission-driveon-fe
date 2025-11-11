@@ -1,14 +1,14 @@
 import Phaser from 'phaser';
-import GameScene from './scenes/GameScene.js';
-import StartScene from './scenes/StartScene.js';
-import GameOverScene from './scenes/GameOverScene.js';
+import HomeScene from './scenes/HomeScene';
+import PlayScene from './scenes/PlayScene';
+import ResultScene from './scenes/ResultScene';
 
 const config = {
   type: Phaser.AUTO,
   parent: 'game',
   width: 640,
   height: 800,
-  scene: [StartScene, GameScene, GameOverScene],
+  scene: [HomeScene, PlayScene, ResultScene],
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,

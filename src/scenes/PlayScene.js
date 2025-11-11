@@ -1,8 +1,10 @@
+import { SCENE } from '../core/constants.js';
+
 import Player from '../objects/Player.js';
 
-export default class GameScene extends Phaser.Scene {
+export default class PlayScene extends Phaser.Scene {
   constructor() {
-    super('GameScene');
+    super(SCENE.PLAY);
   }
 
   init(data) {

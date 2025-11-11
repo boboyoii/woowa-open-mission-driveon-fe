@@ -1,8 +1,9 @@
+import { SCENE } from '../core/constants';
 import '../style.css';
 
-export default class StartScene extends Phaser.Scene {
+export default class HomeScene extends Phaser.Scene {
   constructor() {
-    super('StartScene');
+    super(SCENE.HOME);
   }
 
   preload() {
@@ -52,7 +53,7 @@ export default class StartScene extends Phaser.Scene {
         return;
       }
 
-      this.scene.start('GameScene', { playerName });
+      this.scene.start(SCENE.PLAY, { playerName });
     });
   }
 }
