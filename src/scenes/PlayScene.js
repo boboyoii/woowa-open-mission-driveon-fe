@@ -45,18 +45,8 @@ export default class PlayScene extends Phaser.Scene {
   }
 
   update() {
-    if (this.cursors.left.isDown)
-      this.player.car.x -= GAME_CONFIG.player.moveSpeed;
-    if (this.cursors.right.isDown)
-      this.player.car.x += GAME_CONFIG.player.moveSpeed;
-
-    const { left: roadLeft, right: roadRight } = this.roadManager.getBounds();
-    const half = this.player.car.displayWidth / 2;
-
-    this.player.car.x = Phaser.Math.Clamp(
-      this.player.car.x,
-      roadLeft + half + GAME_CONFIG.road.clampMargin,
-      roadRight - half - GAME_CONFIG.road.clampMargin
-    );
+    const roadBounds = this.roadManager.getBounds();
+    this.player.clampToRoad(roadBounds);
+    this.player.moveByInput(this.cursors);
   }
 }

@@ -5,7 +5,7 @@ export default class Player {
     this.scene = scene;
     this.nickname = nickname;
 
-    this.sprite = scene.add
+    this.car = scene.add
       .image(x, y, texture)
       .setScale(GAME_CONFIG.player.scale);
 
@@ -16,5 +16,24 @@ export default class Player {
       stroke: '#000000',
       strokeThickness: 3,
     });
+  }
+
+  moveByInput(key) {
+    const speed = GAME_CONFIG.player.moveSpeed;
+
+    if (key.left.isDown) this.car.x -= speed;
+    if (key.right.isDown) this.car.x += speed;
+  }
+
+  clampToRoad(roadBounds) {
+    const { left, right } = roadBounds;
+    const W = this.scene.scale.width;
+    const half = this.car.displayWidth / 2;
+
+    this.car.x = Phaser.Math.Clamp(
+      this.car.x,
+      left + half + GAME_CONFIG.road.clampMargin,
+      right - half - GAME_CONFIG.road.clampMargin
+    );
   }
 }
