@@ -1,4 +1,4 @@
-import { ASSET, SCENE } from '../core/constants';
+import { ASSET, GAME_CONFIG, SCENE } from '../core/constants';
 
 export default class ResultScene extends Phaser.Scene {
   constructor() {
@@ -17,7 +17,9 @@ export default class ResultScene extends Phaser.Scene {
 
     this.bg = this.add.image(W / 2, H / 2, this.roadKey).setDisplaySize(W, H);
 
-    this.car = this.add.image(this.carX, this.carY, ASSET.CAR).setScale(0.5);
+    this.car = this.add
+      .image(this.carX, this.carY, ASSET.CAR)
+      .setScale(GAME_CONFIG.player.scale);
 
     this.add.rectangle(W / 2, H / 2, W, H, 0x000000, 0.35).setDepth(5);
 

@@ -1,4 +1,4 @@
-import { ASSET, SCENE } from '../core/constants.js';
+import { ASSET, GAME_CONFIG, SCENE } from '../core/constants.js';
 import Player from '../objects/Player.js';
 
 export default class PlayScene extends Phaser.Scene {
@@ -12,7 +12,7 @@ export default class PlayScene extends Phaser.Scene {
   }
 
   preload() {
-    for (let i = 1; i <= 23; i++) {
+    for (let i = 1; i <= GAME_CONFIG.road.count; i++) {
       this.load.image(`${ASSET.ROAD_PREFIX}${i}`, `assets/road/road_${i}.jpg`);
     }
     this.load.image(ASSET.CAR, 'assets/car.png');
@@ -21,21 +21,18 @@ export default class PlayScene extends Phaser.Scene {
   create() {
     const { width: W, height: H } = this.scale;
 
-    this.roadLeftRatio = 0.16;
-    this.roadRightRatio = 0.84;
-
-    this.totalRoads = 23;
     this.currentRoadIndex = 1;
     this.bg = this.add.image(W / 2, H / 2, `${ASSET.ROAD_PREFIX}1`);
 
     this.bg.setDisplaySize(W, H).setDepth(-10);
 
     this.time.addEvent({
-      delay: 100,
+      delay: GAME_CONFIG.road.swapMs,
       loop: true,
       callback: () => {
         this.currentRoadIndex++;
-        if (this.currentRoadIndex > this.totalRoads) this.currentRoadIndex = 1;
+        if (this.currentRoadIndex > GAME_CONFIG.road.count)
+          this.currentRoadIndex = 1;
         this.bg.setTexture(`${ASSET.ROAD_PREFIX}${this.currentRoadIndex}`);
       },
     });
@@ -46,19 +43,20 @@ export default class PlayScene extends Phaser.Scene {
   }
 
   update() {
-    if (this.cursors.left.isDown) this.player.sprite.x -= 5;
-    if (this.cursors.right.isDown) this.player.sprite.x += 5;
+    if (this.cursors.left.isDown)
+      this.player.sprite.x -= GAME_CONFIG.player.moveSpeed;
+    if (this.cursors.right.isDown)
+      this.player.sprite.x += GAME_CONFIG.player.moveSpeed;
 
     const W = this.scale.width;
     const half = this.player.sprite.displayWidth / 2;
-    const roadLeft = W * this.roadLeftRatio;
-    const roadRight = W * this.roadRightRatio;
-    const margin = 2;
+    const roadLeft = W * GAME_CONFIG.road.leftRatio;
+    const roadRight = W * GAME_CONFIG.road.rightRatio;
 
     this.player.sprite.x = Phaser.Math.Clamp(
       this.player.sprite.x,
-      roadLeft + half + margin,
-      roadRight - half - margin
+      roadLeft + half + GAME_CONFIG.road.clampMargin,
+      roadRight - half - GAME_CONFIG.road.clampMargin
     );
   }
 }
