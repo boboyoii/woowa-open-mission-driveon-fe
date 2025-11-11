@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
-import HomeScene from './scenes/HomeScene';
-import PlayScene from './scenes/PlayScene';
-import ResultScene from './scenes/ResultScene';
+import HomeScene from './scenes/HomeScene.js';
+import PlayScene from './scenes/PlayScene.js';
+import ResultScene from './scenes/ResultScene.js';
 
 const config = {
   type: Phaser.AUTO,

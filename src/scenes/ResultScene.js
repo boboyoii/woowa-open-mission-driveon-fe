@@ -1,4 +1,5 @@
-import { ASSET, GAME_CONFIG, SCENE } from '../core/constants';
+import { ASSET, GAME_CONFIG, SCENE } from '../core/constants.js';
+import { addOverlayMask, makeBtn } from '../core/ui.js';
 
 export default class ResultScene extends Phaser.Scene {
   constructor() {
@@ -21,7 +22,7 @@ export default class ResultScene extends Phaser.Scene {
       .image(this.carX, this.carY, ASSET.CAR)
       .setScale(GAME_CONFIG.player.scale);
 
-    this.add.rectangle(W / 2, H / 2, W, H, 0x000000, 0.35).setDepth(5);
+    addOverlayMask(this);
 
     this.add
       .text(W / 2, H * 0.32, 'GAME OVER', {
@@ -33,29 +34,6 @@ export default class ResultScene extends Phaser.Scene {
       })
       .setOrigin(0.5)
       .setDepth(10);
-
-    const makeBtn = (x, y, label, onClick) => {
-      const btn = this.add
-        .rectangle(x, y, 180, 52, 0xffffff, 1)
-        .setDepth(10)
-        .setInteractive({ useHandCursor: true });
-      const txt = this.add
-        .text(x, y, label, {
-          fontSize: '20px',
-          color: '#222',
-          fontFamily: 'Pretendard, sans-serif',
-        })
-        .setOrigin(0.5)
-        .setDepth(11);
-
-      btn.on('pointerover', () => btn.setScale(1.05));
-      btn.on('pointerout', () => btn.setScale(1.0));
-      btn.on('pointerdown', () => {
-        btn.setScale(0.98);
-        onClick();
-      });
-      return { btn, txt };
-    };
 
     makeBtn(W / 2 - 110, H * 0.6, 'HOME', () => {
       this.scene.start(SCENE.HOME);

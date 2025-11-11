@@ -1,4 +1,4 @@
-import { GAME_CONFIG } from '../core/constants';
+import { GAME_CONFIG } from '../core/constants.js';
 
 export default class Player {
   constructor(scene, x, y, texture, nickname) {
