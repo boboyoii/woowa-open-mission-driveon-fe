@@ -1,5 +1,10 @@
-import { preloadCarImage, preloadRoadImages } from '../core/assets.js';
+import {
+  preloadCarImage,
+  preloadObstacleImages,
+  preloadRoadImages,
+} from '../core/assets.js';
 import { ASSET, GAME_CONFIG, SCENE } from '../core/constants.js';
+import ObstacleManager from '../managers/ObstacleManager.js';
 import { RoadManager } from '../managers/RoadManager.js';
 import Player from '../objects/Player.js';
 
@@ -16,6 +21,7 @@ export default class PlayScene extends Phaser.Scene {
   preload() {
     preloadRoadImages(this, GAME_CONFIG.road.count);
     preloadCarImage(this);
+    preloadObstacleImages(this);
   }
 
   create() {
@@ -29,24 +35,15 @@ export default class PlayScene extends Phaser.Scene {
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
-    // [테스트용] 5초 뒤 결과 화면으로 자동 전환
-    this.time.delayedCall(5000, () => {
-      this.input.keyboard.enabled = false;
-
-      if (this.bgTimer) this.bgTimer.remove(false);
-
-      this.scene.start('ResultScene', {
-        playerName: this.playerName,
-        roadIndex: this.roadManager.getRoadIndex(),
-        carX: this.player.car.x,
-        carY: this.player.car.y,
-      });
-    });
+    this.roadBounds = this.roadManager.getBounds();
+    this.obstacleManager = new ObstacleManager(this, this.roadBounds);
+    this.obstacleManager.startCreateObstacles();
   }
 
   update() {
-    const roadBounds = this.roadManager.getBounds();
-    this.player.clampToRoad(roadBounds);
+    this.player.clampToRoad(this.roadBounds);
     this.player.moveByInput(this.cursors);
+
+    this.obstacleManager.removeObstacles();
   }
 }

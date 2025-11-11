@@ -15,3 +15,10 @@ export function preloadCarImage(scene) {
 export function preloadHomeBGImage(scene) {
   scene.load.image(ASSET.HOME_BG, 'assets/home_bg.jpg');
 }
+
+export function preloadObstacleImages(scene) {
+  scene.load.image(ASSET.OBSTACLE.CONE, 'assets/obstacles/cone.png');
+  scene.load.image(ASSET.OBSTACLE.BARREL, 'assets/obstacles/barrel.png');
+  scene.load.image(ASSET.OBSTACLE.CRASH_CAR, 'assets/obstacles/crash_car.png');
+  scene.load.image(ASSET.OBSTACLE.HOLE, 'assets/obstacles/hole.png');
+}

@@ -16,6 +16,13 @@ const config = {
   },
   dom: { createContainer: true },
   audio: { noAudio: true },
+  physics: {
+    default: 'arcade',
+    arcade: {
+      gravity: { y: 0 },
+      debug: false,
+    },
+  },
 };
 
 new Phaser.Game(config);

@@ -4,7 +4,17 @@ export const SCENE = {
   RESULT: 'ResultScene',
 };
 
-export const ASSET = { CAR: 'car', HOME_BG: 'home_bg', ROAD_PREFIX: 'road_' };
+export const ASSET = {
+  CAR: 'car',
+  HOME_BG: 'home_bg',
+  ROAD_PREFIX: 'road_',
+  OBSTACLE: {
+    CONE: 'cone',
+    BARREL: 'barrel',
+    CRASH_CAR: 'crash_car',
+    HOLE: 'hole',
+  },
+};
 
 export const GAME_CONFIG = {
   road: {
@@ -17,5 +27,9 @@ export const GAME_CONFIG = {
   player: {
     scale: 0.5,
     moveSpeed: 5,
+  },
+  obstacle: {
+    createInterval: 900,
+    speedY: 300,
   },
 };
