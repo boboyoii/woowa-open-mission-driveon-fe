@@ -1,3 +1,4 @@
+import { roadKey } from '../core/assets.js';
 import { ASSET, GAME_CONFIG, SCENE } from '../core/constants.js';
 import { addOverlayMask, makeBtn } from '../core/ui.js';
 
@@ -8,7 +9,7 @@ export default class ResultScene extends Phaser.Scene {
 
   init(data) {
     this.playerName = data.playerName;
-    this.roadKey = data.roadKey;
+    this.roadKey = roadKey(data.roadIndex);
     this.carX = data.carX;
     this.carY = data.carY;
   }
@@ -35,7 +36,7 @@ export default class ResultScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setDepth(10);
 
-    makeBtn(W / 2 - 110, H * 0.6, 'HOME', () => {
+    makeBtn(this, W / 2 - 110, H * 0.6, 'HOME', () => {
       this.scene.start(SCENE.HOME);
     });
 

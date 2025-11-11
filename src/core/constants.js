@@ -4,7 +4,7 @@ export const SCENE = {
   RESULT: 'ResultScene',
 };
 
-export const ASSET = { CAR: 'car', START_BG: 'start_bg', ROAD_PREFIX: 'road_' };
+export const ASSET = { CAR: 'car', HOME_BG: 'home_bg', ROAD_PREFIX: 'road_' };
 
 export const GAME_CONFIG = {
   road: {

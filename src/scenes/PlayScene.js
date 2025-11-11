@@ -1,3 +1,4 @@
+import { preloadCarImage, preloadRoadImages, roadKey } from '../core/assets.js';
 import { ASSET, GAME_CONFIG, SCENE } from '../core/constants.js';
 import Player from '../objects/Player.js';
 
@@ -12,17 +13,15 @@ export default class PlayScene extends Phaser.Scene {
   }
 
   preload() {
-    for (let i = 1; i <= GAME_CONFIG.road.count; i++) {
-      this.load.image(`${ASSET.ROAD_PREFIX}${i}`, `assets/road/road_${i}.jpg`);
-    }
-    this.load.image(ASSET.CAR, 'assets/car.png');
+    preloadRoadImages(this, GAME_CONFIG.road.count);
+    preloadCarImage(this);
   }
 
   create() {
     const { width: W, height: H } = this.scale;
 
     this.currentRoadIndex = 1;
-    this.bg = this.add.image(W / 2, H / 2, `${ASSET.ROAD_PREFIX}1`);
+    this.bg = this.add.image(W / 2, H / 2, roadKey(this.currentRoadIndex));
 
     this.bg.setDisplaySize(W, H).setDepth(-10);
 
@@ -33,13 +32,27 @@ export default class PlayScene extends Phaser.Scene {
         this.currentRoadIndex++;
         if (this.currentRoadIndex > GAME_CONFIG.road.count)
           this.currentRoadIndex = 1;
-        this.bg.setTexture(`${ASSET.ROAD_PREFIX}${this.currentRoadIndex}`);
+        this.bg.setTexture(roadKey(this.currentRoadIndex));
       },
     });
 
     this.player = new Player(this, W / 2, H * 0.85, ASSET.CAR, this.playerName);
 
     this.cursors = this.input.keyboard.createCursorKeys();
+
+    // [테스트용] 5초 뒤 결과 화면으로 자동 전환
+    this.time.delayedCall(5000, () => {
+      this.input.keyboard.enabled = false;
+
+      if (this.bgTimer) this.bgTimer.remove(false);
+
+      this.scene.start('ResultScene', {
+        playerName: this.playerName,
+        roadIndex: this.currentRoadIndex,
+        carX: this.player.sprite.x,
+        carY: this.player.sprite.y,
+      });
+    });
   }
 
   update() {
