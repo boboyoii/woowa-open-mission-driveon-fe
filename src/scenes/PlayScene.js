@@ -1,5 +1,4 @@
-import { SCENE } from '../core/constants.js';
-
+import { ASSET, SCENE } from '../core/constants.js';
 import Player from '../objects/Player.js';
 
 export default class PlayScene extends Phaser.Scene {
@@ -14,9 +13,9 @@ export default class PlayScene extends Phaser.Scene {
 
   preload() {
     for (let i = 1; i <= 23; i++) {
-      this.load.image(`road_${i}`, `assets/road/road_${i}.jpg`);
+      this.load.image(`${ASSET.ROAD_PREFIX}${i}`, `assets/road/road_${i}.jpg`);
     }
-    this.load.image('car', 'assets/car.png');
+    this.load.image(ASSET.CAR, 'assets/car.png');
   }
 
   create() {
@@ -27,7 +26,7 @@ export default class PlayScene extends Phaser.Scene {
 
     this.totalRoads = 23;
     this.currentRoadIndex = 1;
-    this.bg = this.add.image(W / 2, H / 2, 'road_1');
+    this.bg = this.add.image(W / 2, H / 2, `${ASSET.ROAD_PREFIX}1`);
 
     this.bg.setDisplaySize(W, H).setDepth(-10);
 
@@ -37,11 +36,11 @@ export default class PlayScene extends Phaser.Scene {
       callback: () => {
         this.currentRoadIndex++;
         if (this.currentRoadIndex > this.totalRoads) this.currentRoadIndex = 1;
-        this.bg.setTexture(`road_${this.currentRoadIndex}`);
+        this.bg.setTexture(`${ASSET.ROAD_PREFIX}${this.currentRoadIndex}`);
       },
     });
 
-    this.player = new Player(this, W / 2, H * 0.85, 'car', this.playerName);
+    this.player = new Player(this, W / 2, H * 0.85, ASSET.CAR, this.playerName);
 
     this.cursors = this.input.keyboard.createCursorKeys();
   }

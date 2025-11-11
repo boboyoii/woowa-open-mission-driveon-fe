@@ -1,4 +1,4 @@
-import { SCENE } from '../core/constants';
+import { ASSET, SCENE } from '../core/constants';
 import '../style.css';
 
 export default class HomeScene extends Phaser.Scene {
@@ -7,13 +7,13 @@ export default class HomeScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('start_bg', 'assets/start_bg.jpg');
+    this.load.image(ASSET.START_BG, 'assets/start_bg.jpg');
   }
 
   create() {
     const { width: W, height: H } = this.scale;
 
-    this.bg = this.add.image(W / 2, H / 2, 'start_bg');
+    this.bg = this.add.image(W / 2, H / 2, ASSET.START_BG);
     this.bg.setDisplaySize(W, H);
 
     this.nameInput = this.add.dom(W / 2.15, H * 0.54, 'input');
