@@ -63,8 +63,8 @@ export default class PlayScene extends Phaser.Scene {
     const ratio = this.player.fuel.ratio();
     this.fuelBar.setRatio(ratio);
 
-    if (!this.player.fuel.hasFuel()) {
-      console.log('게임 끝');
+    if (!this.player.fuel.hasFuel() && !this.isGameOver) {
+      this.time.delayedCall(200, () => this.goToResultScene());
     }
 
     this.obstacleManager.removeObstacles();
@@ -82,6 +82,20 @@ export default class PlayScene extends Phaser.Scene {
       alpha: 0,
       duration: 120,
       onComplete: () => obstacle.destroy(),
+    });
+  }
+
+  goToResultScene() {
+    if (this.isGameOver) return;
+    this.isGameOver = true;
+
+    this.game.renderer.snapshot((image) => {
+      const dataURL = image.src;
+
+      this.scene.start(SCENE.RESULT, {
+        screenshot: dataURL,
+        playerName: this.playerName,
+      });
     });
   }
 }
