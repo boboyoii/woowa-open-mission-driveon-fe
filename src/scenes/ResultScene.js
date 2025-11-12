@@ -1,5 +1,4 @@
-import { roadKey } from '../core/assets.js';
-import { ASSET, GAME_CONFIG, SCENE } from '../core/constants.js';
+import { SCENE } from '../core/constants.js';
 import { addOverlayMask, makeBtn } from '../core/ui.js';
 
 export default class ResultScene extends Phaser.Scene {
@@ -8,20 +7,19 @@ export default class ResultScene extends Phaser.Scene {
   }
 
   init(data) {
-    this.playerName = data.playerName;
-    this.roadKey = roadKey(data.roadIndex);
-    this.carX = data.carX;
-    this.carY = data.carY;
+    this.screenshot = data.screenshot;
+  }
+
+  preload() {
+    if (this.textures.exists('screenshot')) this.textures.remove('screenshot');
+
+    if (this.screenshot) this.load.image('screenshot', this.screenshot);
   }
 
   create() {
     const { width: W, height: H } = this.scale;
 
-    this.bg = this.add.image(W / 2, H / 2, this.roadKey).setDisplaySize(W, H);
-
-    this.car = this.add
-      .image(this.carX, this.carY, ASSET.CAR)
-      .setScale(GAME_CONFIG.player.scale);
+    this.add.image(W / 2, H / 2, 'screenshot').setDisplaySize(W, H);
 
     addOverlayMask(this);
 
@@ -38,14 +36,6 @@ export default class ResultScene extends Phaser.Scene {
 
     makeBtn(this, W / 2 - 110, H * 0.6, 'HOME', () => {
       this.scene.start(SCENE.HOME);
-    });
-
-    this.add.text(20, 20, this.playerName, {
-      fontSize: '20px',
-      color: '#ffffff',
-      fontFamily: 'Pretendard, sans-serif',
-      stroke: '#000000',
-      strokeThickness: 3,
     });
   }
 }

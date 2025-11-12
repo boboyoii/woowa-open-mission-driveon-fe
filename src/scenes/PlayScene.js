@@ -42,7 +42,7 @@ export default class PlayScene extends Phaser.Scene {
     this.physics.add.collider(
       this.player.car,
       this.obstacleManager.obstacleGroup,
-      () => console.log('충돌'),
+      this.handleObstacleCollision,
       null,
       this
     );
@@ -53,5 +53,14 @@ export default class PlayScene extends Phaser.Scene {
     this.player.moveByInput(this.cursors);
 
     this.obstacleManager.removeObstacles();
+  }
+
+  handleObstacleCollision(player, obstacle) {
+    this.game.renderer.snapshot((image) => {
+      const dataURL = image.src;
+      this.scene.start(SCENE.RESULT, {
+        screenshot: dataURL,
+      });
+    });
   }
 }
