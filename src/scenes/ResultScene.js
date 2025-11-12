@@ -8,6 +8,7 @@ export default class ResultScene extends Phaser.Scene {
 
   init(data) {
     this.screenshot = data.screenshot;
+    this.playerName = data.playerName;
   }
 
   preload() {
@@ -36,6 +37,12 @@ export default class ResultScene extends Phaser.Scene {
 
     makeBtn(this, W / 2 - 110, H * 0.6, 'HOME', () => {
       this.scene.start(SCENE.HOME);
+    });
+
+    makeBtn(this, W / 2 + 110, H * 0.6, 'RESTART', () => {
+      this.scene.start(SCENE.PLAY, {
+        playerName: this.playerName,
+      });
     });
   }
 }

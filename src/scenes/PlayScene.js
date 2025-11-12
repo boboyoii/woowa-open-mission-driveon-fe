@@ -11,9 +11,11 @@ import Player from '../objects/Player.js';
 export default class PlayScene extends Phaser.Scene {
   constructor() {
     super(SCENE.PLAY);
+    this.isGameOver = false;
   }
 
   init(data) {
+    this.isGameOver = false;
     this.input.keyboard.enabled = true;
     this.playerName = data.playerName;
   }
@@ -56,10 +58,14 @@ export default class PlayScene extends Phaser.Scene {
   }
 
   handleObstacleCollision(player, obstacle) {
+    if (this.isGameOver) return;
+    this.isGameOver = true;
+
     this.game.renderer.snapshot((image) => {
       const dataURL = image.src;
       this.scene.start(SCENE.RESULT, {
         screenshot: dataURL,
+        playerName: this.playerName,
       });
     });
   }
