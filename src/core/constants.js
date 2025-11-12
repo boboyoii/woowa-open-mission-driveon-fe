@@ -32,4 +32,21 @@ export const GAME_CONFIG = {
     createInterval: 900,
     speedY: 300,
   },
+  fuel: {
+    max: 100,
+    drainPerSec: 3,
+    bar: {
+      width: 290,
+      height: 18,
+      radius: 6,
+      depth: 1000,
+
+      colors: {
+        bg: 0x1f1f1f,
+        good: 0x7fffd4,
+        warn: 0xffd166,
+        low: 0xff5c8a,
+      },
+    },
+  },
 };

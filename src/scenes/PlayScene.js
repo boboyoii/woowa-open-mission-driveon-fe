@@ -7,6 +7,7 @@ import { ASSET, GAME_CONFIG, SCENE } from '../core/constants.js';
 import ObstacleManager from '../managers/ObstacleManager.js';
 import { RoadManager } from '../managers/RoadManager.js';
 import Player from '../objects/Player.js';
+import FuleBar from '../ui/FuleBar.js';
 
 export default class PlayScene extends Phaser.Scene {
   constructor() {
@@ -33,7 +34,12 @@ export default class PlayScene extends Phaser.Scene {
     this.roadManager.initRoad();
     this.roadManager.animateRoad();
 
-    this.player = new Player(this, W / 2, H * 0.85, ASSET.CAR, this.playerName);
+    this.player = new Player(this, W / 3, H * 0.85, ASSET.CAR, this.playerName);
+
+    const GAP = 10;
+    const nameRightX = 20 + this.player.nameWidth + GAP;
+
+    this.fuelBar = new FuleBar(this, 20, 20);
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -50,14 +56,24 @@ export default class PlayScene extends Phaser.Scene {
     );
   }
 
-  update() {
+  update(_, delta) {
+    const sec = delta / 1000;
+
     this.player.clampToRoad(this.roadBounds);
     this.player.moveByInput(this.cursors);
+
+    this.player.updateFuel(sec);
+    const ratio = this.player.fuel.ratio();
+    this.fuelBar.setRatio(ratio);
+
+    if (!this.player.fuel.hasFuel()) {
+      console.log('게임 끝');
+    }
 
     this.obstacleManager.removeObstacles();
   }
 
-  handleObstacleCollision(player, obstacle) {
+  handleObstacleCollision() {
     if (this.isGameOver) return;
     this.isGameOver = true;
 
