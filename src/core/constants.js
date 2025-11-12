@@ -35,6 +35,7 @@ export const GAME_CONFIG = {
   fuel: {
     max: 100,
     drainPerSec: 3,
+    collisionDamage: 15,
     bar: {
       width: 290,
       height: 18,

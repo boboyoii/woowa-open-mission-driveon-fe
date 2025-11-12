@@ -5,12 +5,16 @@ export default class Fuel {
     this.drainPerSec = drainPerSec;
   }
 
-  addFuel(amount) {
+  add(amount) {
     this.current = Math.min(this.max, this.current + amount);
   }
 
-  consume(dt) {
+  consumeByTime(dt) {
     this.current = Math.max(0, this.current - this.drainPerSec * dt);
+  }
+
+  consume(amount) {
+    this.current = Math.max(0, this.current - amount);
   }
 
   ratio() {

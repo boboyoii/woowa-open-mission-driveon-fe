@@ -1,5 +1,5 @@
 import { GAME_CONFIG } from '../core/constants.js';
-import Fuel from './Fule.js';
+import Fuel from './Fuel.js';
 
 export default class Player {
   constructor(scene, x, y, texture, nickname) {
@@ -47,6 +47,10 @@ export default class Player {
   }
 
   updateFuel(sec) {
-    this.fuel.consume(sec);
+    this.fuel.consumeByTime(sec);
+  }
+
+  hitObstacle(damage) {
+    this.fuel.consume(damage);
   }
 }

@@ -7,7 +7,7 @@ import { ASSET, GAME_CONFIG, SCENE } from '../core/constants.js';
 import ObstacleManager from '../managers/ObstacleManager.js';
 import { RoadManager } from '../managers/RoadManager.js';
 import Player from '../objects/Player.js';
-import FuleBar from '../ui/FuleBar.js';
+import FuelBar from '../ui/FuelBar.js';
 
 export default class PlayScene extends Phaser.Scene {
   constructor() {
@@ -36,10 +36,7 @@ export default class PlayScene extends Phaser.Scene {
 
     this.player = new Player(this, W / 3, H * 0.85, ASSET.CAR, this.playerName);
 
-    const GAP = 10;
-    const nameRightX = 20 + this.player.nameWidth + GAP;
-
-    this.fuelBar = new FuleBar(this, 20, 20);
+    this.fuelBar = new FuelBar(this, 20, 20);
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -47,10 +44,10 @@ export default class PlayScene extends Phaser.Scene {
     this.obstacleManager = new ObstacleManager(this, this.roadBounds);
     this.obstacleManager.startCreateObstacles();
 
-    this.physics.add.collider(
+    this.physics.add.overlap(
       this.player.car,
       this.obstacleManager.obstacleGroup,
-      this.handleObstacleCollision,
+      this.handleObstacleHit,
       null,
       this
     );
@@ -73,16 +70,18 @@ export default class PlayScene extends Phaser.Scene {
     this.obstacleManager.removeObstacles();
   }
 
-  handleObstacleCollision() {
-    if (this.isGameOver) return;
-    this.isGameOver = true;
+  handleObstacleHit(_, obstacle) {
+    if (obstacle.body) obstacle.body.enable = false;
 
-    this.game.renderer.snapshot((image) => {
-      const dataURL = image.src;
-      this.scene.start(SCENE.RESULT, {
-        screenshot: dataURL,
-        playerName: this.playerName,
-      });
+    this.player.hitObstacle(GAME_CONFIG.fuel.collisionDamage);
+    this.fuelBar.setRatio(this.player.fuel.ratio());
+    this.cameras.main.shake(50, 0.02);
+
+    this.tweens.add({
+      targets: obstacle,
+      alpha: 0,
+      duration: 120,
+      onComplete: () => obstacle.destroy(),
     });
   }
 }

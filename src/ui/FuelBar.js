@@ -1,6 +1,6 @@
 import { GAME_CONFIG } from '../core/constants.js';
 
-export default class FuleBar {
+export default class FuelBar {
   constructor(scene, x, y) {
     const BAR = GAME_CONFIG.fuel.bar;
 
@@ -12,10 +12,10 @@ export default class FuleBar {
 
     this.scene = scene;
 
-    this.createFuleBar(x, y);
+    this.createFuelBar(x, y);
   }
 
-  createFuleBar(x, y) {
+  createFuelBar(x, y) {
     this.container = this.scene.add.container(x, y).setDepth(this.depth);
 
     this.background = this.scene.add.graphics();
