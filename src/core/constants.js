@@ -25,7 +25,7 @@ export const GAME_CONFIG = {
     swapMs: 100,
   },
   player: {
-    scale: 0.5,
+    scale: 0.4,
     moveSpeed: 5,
   },
   obstacle: {

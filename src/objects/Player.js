@@ -5,9 +5,10 @@ export default class Player {
     this.scene = scene;
     this.nickname = nickname;
 
-    this.car = scene.add
+    this.car = scene.physics.add
       .image(x, y, texture)
-      .setScale(GAME_CONFIG.player.scale);
+      .setScale(GAME_CONFIG.player.scale)
+      .setImmovable(false);
 
     this.nameText = scene.add.text(20, 20, nickname, {
       fontSize: '20px',

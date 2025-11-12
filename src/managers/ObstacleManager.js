@@ -6,7 +6,7 @@ export default class ObstacleManager {
     this.roadBounds = roadBounds;
 
     this.obstacleGroup = this.scene.physics.add.group({
-      immovable: true,
+      immovable: false,
       allowGravity: false,
     });
   }
@@ -37,6 +37,7 @@ export default class ObstacleManager {
 
     const obstacle = this.obstacleGroup
       .create(randomX, startY, obstacleKey)
+      .setScale(1.35)
       .setActive(true)
       .setVisible(true);
 

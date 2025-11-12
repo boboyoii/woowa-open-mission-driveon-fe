@@ -38,6 +38,14 @@ export default class PlayScene extends Phaser.Scene {
     this.roadBounds = this.roadManager.getBounds();
     this.obstacleManager = new ObstacleManager(this, this.roadBounds);
     this.obstacleManager.startCreateObstacles();
+
+    this.physics.add.collider(
+      this.player.car,
+      this.obstacleManager.obstacleGroup,
+      () => console.log('충돌'),
+      null,
+      this
+    );
   }
 
   update() {
