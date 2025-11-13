@@ -1,9 +1,11 @@
 import {
   preloadCarImage,
+  preloadFuelItem,
   preloadObstacleImages,
   preloadRoadImages,
 } from '../core/assets.js';
 import { ASSET, GAME_CONFIG, SCENE } from '../core/constants.js';
+import FuelManager from '../managers/FuelManager.js';
 import ObstacleManager from '../managers/ObstacleManager.js';
 import { RoadManager } from '../managers/RoadManager.js';
 import Player from '../objects/Player.js';
@@ -25,6 +27,7 @@ export default class PlayScene extends Phaser.Scene {
     preloadRoadImages(this, GAME_CONFIG.road.count);
     preloadCarImage(this);
     preloadObstacleImages(this);
+    preloadFuelItem(this);
   }
 
   create() {
@@ -34,16 +37,15 @@ export default class PlayScene extends Phaser.Scene {
     this.roadManager.initRoad();
     this.roadManager.animateRoad();
 
-    this.player = new Player(this, W / 3, H * 0.85, ASSET.CAR, this.playerName);
+    this.player = new Player(this, W / 2, H * 0.85, ASSET.CAR, this.playerName);
 
     this.fuelBar = new FuelBar(this, 20, 20);
 
     this.cursors = this.input.keyboard.createCursorKeys();
-
     this.roadBounds = this.roadManager.getBounds();
+
     this.obstacleManager = new ObstacleManager(this, this.roadBounds);
     this.obstacleManager.startCreateObstacles();
-
     this.physics.add.overlap(
       this.player.car,
       this.obstacleManager.obstacleGroup,
@@ -51,6 +53,8 @@ export default class PlayScene extends Phaser.Scene {
       null,
       this
     );
+
+    this.fuelManager = new FuelManager(this, this.roadBounds);
   }
 
   update(_, delta) {
@@ -73,7 +77,7 @@ export default class PlayScene extends Phaser.Scene {
   handleObstacleHit(_, obstacle) {
     if (obstacle.body) obstacle.body.enable = false;
 
-    this.player.hitObstacle(GAME_CONFIG.fuel.collisionDamage);
+    this.player.hitObstacle(GAME_CONFIG.obstacle.damage);
     this.fuelBar.setRatio(this.player.fuel.ratio());
     this.cameras.main.shake(50, 0.02);
 
