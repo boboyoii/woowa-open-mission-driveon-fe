@@ -5,7 +5,7 @@ export default class Fuel {
     this.drainPerSec = drainPerSec;
   }
 
-  add(amount) {
+  refuel(amount) {
     this.current = Math.min(this.max, this.current + amount);
   }
 

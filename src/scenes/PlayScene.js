@@ -38,14 +38,12 @@ export default class PlayScene extends Phaser.Scene {
     this.roadManager.animateRoad();
 
     this.player = new Player(this, W / 2, H * 0.85, ASSET.CAR, this.playerName);
-
     this.fuelBar = new FuelBar(this, 20, 20);
 
     this.cursors = this.input.keyboard.createCursorKeys();
     this.roadBounds = this.roadManager.getBounds();
 
     this.obstacleManager = new ObstacleManager(this, this.roadBounds);
-    this.obstacleManager.startCreateObstacles();
     this.physics.add.overlap(
       this.player.car,
       this.obstacleManager.obstacleGroup,
@@ -55,6 +53,13 @@ export default class PlayScene extends Phaser.Scene {
     );
 
     this.fuelManager = new FuelManager(this, this.roadBounds);
+    this.physics.add.overlap(
+      this.player.car,
+      this.fuelManager.fuelItemgroup,
+      this.handleFuelGain,
+      null,
+      this
+    );
   }
 
   update(_, delta) {
@@ -86,6 +91,20 @@ export default class PlayScene extends Phaser.Scene {
       alpha: 0,
       duration: 120,
       onComplete: () => obstacle.destroy(),
+    });
+  }
+
+  handleFuelGain(_, fuel) {
+    if (fuel.body) fuel.body.enable = false;
+
+    this.player.gainFuel(GAME_CONFIG.fuel_item.gainAmount);
+    this.fuelBar.setRatio(this.player.fuel.ratio());
+
+    this.tweens.add({
+      targets: fuel,
+      alpha: 0,
+      duration: 120,
+      onComplete: () => fuel.destroy(),
     });
   }
 

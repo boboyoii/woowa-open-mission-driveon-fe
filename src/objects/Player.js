@@ -53,4 +53,8 @@ export default class Player {
   hitObstacle(damage) {
     this.fuel.consume(damage);
   }
+
+  gainFuel(amount) {
+    this.fuel.refuel(amount);
+  }
 }
