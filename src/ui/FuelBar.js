@@ -46,4 +46,59 @@ export default class FuelBar {
 
     return this;
   }
+
+  showGain(amount) {
+    this.#showFloatingText({
+      value: `+${amount}`,
+      color: '#42ffe9',
+      withPop: true,
+    });
+  }
+
+  showDamage(damage) {
+    this.#showFloatingText({
+      value: `-${damage}`,
+      color: '#ff426f',
+      withPop: false,
+    });
+  }
+
+  #showFloatingText({ value, color, withPop }) {
+    const x = this.container.x + this.width - 20;
+    const y = this.container.y + this.height / 2 + 25;
+
+    const text = this.scene.add
+      .text(x, y, value, {
+        fontSize: '28px',
+        fontFamily: 'Arial',
+        fontStyle: 'bold',
+        color,
+        stroke: '#003333',
+        strokeThickness: 4,
+        shadow: { offsetX: 2, offsetY: 2, color: '#004444', blur: 4 },
+      })
+      .setDepth(this.depth + 5)
+      .setOrigin(0, 0.5);
+
+    this.scene.tweens.add({
+      targets: text,
+      y: y - 40,
+      scale: 2,
+      alpha: 0,
+      duration: 3000,
+      ease: 'Expo.out',
+      onComplete: () => text.destroy(),
+    });
+
+    if (withPop) {
+      this.scene.tweens.add({
+        targets: this.container,
+        scaleX: 1.18,
+        scaleY: 1.22,
+        yoyo: true,
+        duration: 160,
+        ease: 'Back.out(2)',
+      });
+    }
+  }
 }

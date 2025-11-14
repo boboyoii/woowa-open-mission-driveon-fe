@@ -84,6 +84,8 @@ export default class PlayScene extends Phaser.Scene {
 
     this.player.hitObstacle(GAME_CONFIG.obstacle.damage);
     this.fuelBar.setRatio(this.player.fuel.ratio());
+    this.fuelBar.showDamage(GAME_CONFIG.obstacle.damage);
+
     this.cameras.main.shake(50, 0.02);
 
     this.tweens.add({
@@ -99,6 +101,7 @@ export default class PlayScene extends Phaser.Scene {
 
     this.player.gainFuel(GAME_CONFIG.fuel_item.gainAmount);
     this.fuelBar.setRatio(this.player.fuel.ratio());
+    this.fuelBar.showGain(GAME_CONFIG.fuel_item.gainAmount);
 
     this.tweens.add({
       targets: fuel,
