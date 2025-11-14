@@ -9,10 +9,13 @@ export default class ObstacleManager {
       immovable: false,
       allowGravity: false,
     });
+
+    this.startCreateObstacles();
   }
 
   startCreateObstacles() {
     const interval = GAME_CONFIG.obstacle.createInterval;
+
     this.createObstacleTimer = this.scene.time.addEvent({
       delay: interval,
       loop: true,

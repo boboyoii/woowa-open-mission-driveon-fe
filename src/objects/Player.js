@@ -1,4 +1,5 @@
 import { GAME_CONFIG } from '../core/constants.js';
+import Fuel from './Fuel.js';
 
 export default class Player {
   constructor(scene, x, y, texture, nickname) {
@@ -10,13 +11,20 @@ export default class Player {
       .setScale(GAME_CONFIG.player.scale)
       .setImmovable(false);
 
-    this.nameText = scene.add.text(20, 20, nickname, {
-      fontSize: '20px',
-      color: '#ffffff',
-      fontFamily: 'Pretendard, sans-serif',
-      stroke: '#000000',
-      strokeThickness: 3,
-    });
+    const { max, drainPerSec } = GAME_CONFIG.fuel;
+    this.fuel = new Fuel(max, drainPerSec);
+
+    this.nameText = scene.add
+      .text(20, 45, nickname, {
+        fontSize: '20px',
+        color: '#ffffff',
+        fontFamily: 'Pretendard, sans-serif',
+        stroke: '#000000',
+        strokeThickness: 3,
+      })
+      .setDepth(1000);
+
+    this.nameWidth = this.nameText.displayWidth;
   }
 
   moveByInput(key) {
@@ -36,5 +44,17 @@ export default class Player {
       left + half + GAME_CONFIG.road.clampMargin,
       right - half - GAME_CONFIG.road.clampMargin
     );
+  }
+
+  updateFuel(sec) {
+    this.fuel.consumeByTime(sec);
+  }
+
+  hitObstacle(damage) {
+    this.fuel.consume(damage);
+  }
+
+  gainFuel(amount) {
+    this.fuel.refuel(amount);
   }
 }

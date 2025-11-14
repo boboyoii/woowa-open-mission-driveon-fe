@@ -14,6 +14,7 @@ export const ASSET = {
     CRASH_CAR: 'crash_car',
     HOLE: 'hole',
   },
+  FUEL_ITEM: 'fuel_item',
 };
 
 export const GAME_CONFIG = {
@@ -31,5 +32,28 @@ export const GAME_CONFIG = {
   obstacle: {
     createInterval: 900,
     speedY: 300,
+    damage: 15,
+  },
+  fuel_item: {
+    createInterval: 7777,
+    speedY: 300,
+    gainAmount: 20,
+  },
+  fuel: {
+    max: 100,
+    drainPerSec: 3,
+    bar: {
+      width: 290,
+      height: 18,
+      radius: 6,
+      depth: 1000,
+
+      colors: {
+        bg: 0x1f1f1f,
+        good: 0x42ffe9,
+        warn: 0xffce42,
+        low: 0xff426f,
+      },
+    },
   },
 };
