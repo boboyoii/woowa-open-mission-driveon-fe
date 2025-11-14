@@ -90,26 +90,31 @@ DriveOn은 자동차가 연료가 떨어지기 전까지 얼마나 멀리 달릴
 
 ```
 
-## 시스템 구조
+## 디렉터리 구조
 
 ```
 src/
  ├─ core/
- │   ├─ constants.js   # 전역 상수
- │   ├─ assets.js      # 이미지 등록
- │   └─ ui.js          # UI 요소 생성 유틸
- │
- ├─ scenes/            # 게임의 주요 장면
- │   ├─ HomeScene.js
- │   ├─ PlayScene.js
- │   └─ ResultScene.js
+ │   ├─ constants.js     # 전역 상수
+ │   ├─ assets.js        # 이미지 등록
+ │   └─ ui.js            # 공통 UI 요소
  │
  ├─ managers/
- │   ├─ RoadManager.js     # 도로 애니메이션 및 경계 관리
- │   └─ ObstacleManager.js # 장애물 생성, 이동, 제거 관리
+ │   ├─ RoadManager.js       # 도로 애니메이션 및 경계 관리
+ │   ├─ ObstacleManager.js   # 장애물 생성, 이동, 제거 관리
+ │   └─ FuelManager.js       # 연료 아이템 생성, 이동, 제거 관리
  │
- └─ objects/
-     └─ Player.js       # 플레이어 객체
+ ├─ objects/
+ │   ├─ Fuel.js          # 연료 상태 관리
+ │   └─ Player.js        # 플레이어 상태 관리
+ │
+ ├─ scenes/
+ │   ├─ HomeScene.js     # 홈 화면
+ │   ├─ PlayScene.js     # 플레이 화면
+ │   └─ ResultScene.js   # 게임 종료 화면
+ │
+ └─ ui/
+     └─ FuelBar.js        # 연료 게이지 UI
 
 ```
 
