@@ -56,8 +56,8 @@ export default class Player {
     );
   }
 
-  updateFuel(sec) {
-    this.fuel.consumeByTime(sec);
+  updateFuel(dtSec) {
+    this.fuel.consumeByTime(dtSec);
   }
 
   hitObstacle(damage) {
@@ -68,9 +68,9 @@ export default class Player {
     this.fuel.refuel(amount);
   }
 
-  updateDistance(sec) {
+  updateDistance(dtSec) {
     const speed = GAME_CONFIG.obstacle.speedY;
-    this.distance += speed * sec;
+    this.distance += speed * dtSec;
   }
 
   getMeters() {

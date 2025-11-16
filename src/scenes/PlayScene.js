@@ -66,8 +66,8 @@ export default class PlayScene extends Phaser.Scene {
   }
 
   update(_, delta) {
-    const sec = delta / 1000;
-    this.player.updateDistance(sec);
+    const dtSec = delta / 1000;
+    this.player.updateDistance(dtSec);
 
     const meters = this.player.getMeters();
     this.distanceUI.update(meters);
@@ -75,7 +75,7 @@ export default class PlayScene extends Phaser.Scene {
     this.player.clampToRoad(this.roadBounds);
     this.player.moveByInput(this.cursors);
 
-    this.player.updateFuel(sec);
+    this.player.updateFuel(dtSec);
     const ratio = this.player.fuel.ratio();
     this.fuelBar.setRatio(ratio);
 
@@ -128,6 +128,7 @@ export default class PlayScene extends Phaser.Scene {
       this.scene.start(SCENE.RESULT, {
         screenshot: dataURL,
         playerName: this.playerName,
+        finalDistance: this.player.getMeters(),
       });
     });
   }

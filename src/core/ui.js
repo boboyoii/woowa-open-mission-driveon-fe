@@ -23,7 +23,5 @@ export function makeBtn(scene, x, y, label, onClick) {
 
 export function addOverlayMask(scene, depth = 5) {
   const { width: W, height: H } = scene.scale;
-  return scene.add
-    .rectangle(W / 2, H / 2, W, H, 0x000000, 0.35)
-    .setDepth(depth);
+  return scene.add.rectangle(W / 2, H / 2, W, H, 0x000000, 0.7).setDepth(depth);
 }
