@@ -6,17 +6,21 @@ export default class Player {
     this.scene = scene;
     this.nickname = nickname;
 
-    this.car = scene.physics.add
+    this.car = this.createCar(x, y, texture);
+    this.nameText = this.createNameText(nickname);
+
+    this.initPlayState();
+  }
+
+  createCar(x, y, texture) {
+    return this.scene.physics.add
       .image(x, y, texture)
       .setScale(GAME_CONFIG.player.scale)
       .setImmovable(false);
+  }
 
-    const { max, drainPerSec } = GAME_CONFIG.fuel;
-    this.fuel = new Fuel(max, drainPerSec);
-
-    this.distance = 0;
-
-    this.nameText = scene.add
+  createNameText(nickname) {
+    return this.scene.add
       .text(20, 45, nickname, {
         fontSize: '20px',
         color: '#ffffff',
@@ -25,8 +29,12 @@ export default class Player {
         strokeThickness: 3,
       })
       .setDepth(1000);
+  }
 
-    this.nameWidth = this.nameText.displayWidth;
+  initPlayState() {
+    const { max, drainPerSec } = GAME_CONFIG.fuel;
+    this.fuel = new Fuel(max, drainPerSec);
+    this.distance = 0;
   }
 
   moveByInput(key) {
