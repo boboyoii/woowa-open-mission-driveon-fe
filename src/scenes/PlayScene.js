@@ -9,6 +9,7 @@ import FuelManager from '../managers/FuelManager.js';
 import ObstacleManager from '../managers/ObstacleManager.js';
 import { RoadManager } from '../managers/RoadManager.js';
 import Player from '../objects/Player.js';
+import DistanceText from '../ui/DistanceText.js';
 import FuelBar from '../ui/FuelBar.js';
 
 export default class PlayScene extends Phaser.Scene {
@@ -60,10 +61,16 @@ export default class PlayScene extends Phaser.Scene {
       null,
       this
     );
+
+    this.distanceUI = new DistanceText(this);
   }
 
   update(_, delta) {
     const sec = delta / 1000;
+    this.player.updateDistance(sec);
+
+    const meters = this.player.getMeters();
+    this.distanceUI.update(meters);
 
     this.player.clampToRoad(this.roadBounds);
     this.player.moveByInput(this.cursors);

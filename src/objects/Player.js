@@ -14,6 +14,8 @@ export default class Player {
     const { max, drainPerSec } = GAME_CONFIG.fuel;
     this.fuel = new Fuel(max, drainPerSec);
 
+    this.distance = 0;
+
     this.nameText = scene.add
       .text(20, 45, nickname, {
         fontSize: '20px',
@@ -56,5 +58,14 @@ export default class Player {
 
   gainFuel(amount) {
     this.fuel.refuel(amount);
+  }
+
+  updateDistance(sec) {
+    const speed = GAME_CONFIG.obstacle.speedY;
+    this.distance += speed * sec;
+  }
+
+  getMeters() {
+    return Math.floor(this.distance / 50);
   }
 }
