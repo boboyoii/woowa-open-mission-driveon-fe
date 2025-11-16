@@ -26,15 +26,17 @@ export default class ResultScene extends Phaser.Scene {
     this.drawPlayerName(W, H);
     this.drawFinalDistance(W, H);
 
-    makeBtn(this, W / 2, H * 0.67, 'HOME', () => {
+    makeBtn(this, W / 2, H * 0.65, 'HOME', () => {
       this.scene.start(SCENE.HOME);
     });
 
-    makeBtn(this, W / 2, H * 0.77, 'RESTART', () => {
+    makeBtn(this, W / 2, H * 0.75, 'RESTART', () => {
       this.scene.start(SCENE.PLAY, {
         playerName: this.playerName,
       });
     });
+
+    makeBtn(this, W / 2, H * 0.85, 'RANKING', () => {});
   }
 
   drawBackground(W, H) {
