@@ -36,7 +36,16 @@ export default class ResultScene extends Phaser.Scene {
       });
     });
 
-    makeBtn(this, W / 2, H * 0.85, 'RANKING', () => {});
+    makeBtn(this, W / 2, H * 0.85, 'RANKING', () => {
+      this.scene.start(SCENE.RANKING, {
+        from: SCENE.RESULT,
+        playerRecord: {
+          screenshot: this.screenshot,
+          playerName: this.playerName,
+          finalDistance: this.finalDistance,
+        },
+      });
+    });
   }
 
   drawBackground(W, H) {

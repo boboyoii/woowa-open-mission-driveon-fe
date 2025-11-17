@@ -34,5 +34,9 @@ export default class HomeScene extends Phaser.Scene {
 
       this.scene.start(SCENE.PLAY, { playerName });
     });
+
+    makeBtn(this, W / 2, H * 0.85, 'RANKINGS', () => {
+      this.scene.start(SCENE.RANKING, { from: SCENE.HOME });
+    });
   }
 }
