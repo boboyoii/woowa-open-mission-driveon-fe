@@ -10,63 +10,10 @@ export default class RankingScene extends Phaser.Scene {
     this.from = data.from ?? SCENE.MAIN;
     this.playerRecord = data.playerRecord ?? null;
 
-    // mock data
-    this.rankings = [
-      {
-        rank: 1,
-        name: 'bobo',
-        distance: 1230,
-        playedAt: '2025-11-16T14:30:00Z',
-      },
-      {
-        rank: 2,
-        name: 'guest',
-        distance: 980,
-        playedAt: '2025-11-15T20:12:00Z',
-      },
-      {
-        rank: 3,
-        name: 'player',
-        distance: 850,
-        playedAt: '2025-11-14T09:45:00Z',
-      },
-      {
-        rank: 4,
-        name: 'sunny',
-        distance: 760,
-        playedAt: '2025-11-13T11:02:00Z',
-      },
-      { rank: 5, name: 'neo', distance: 700, playedAt: '2025-11-12T18:33:00Z' },
-
-      {
-        rank: 1,
-        name: 'bobo',
-        distance: 1230,
-        playedAt: '2025-11-16T14:30:00Z',
-      },
-      {
-        rank: 2,
-        name: 'guest',
-        distance: 980,
-        playedAt: '2025-11-15T20:12:00Z',
-      },
-      {
-        rank: 3,
-        name: 'player',
-        distance: 850,
-        playedAt: '2025-11-14T09:45:00Z',
-      },
-      {
-        rank: 4,
-        name: 'sunny',
-        distance: 760,
-        playedAt: '2025-11-13T11:02:00Z',
-      },
-      { rank: 5, name: 'neo', distance: 700, playedAt: '2025-11-12T18:33:00Z' },
-    ];
+    this.rankings = [];
   }
 
-  create() {
+  async create() {
     const { width: W, height: H } = this.scale;
 
     this.bg = this.add.image(W / 2, H / 2, ASSET.HOME_BG);
@@ -82,6 +29,7 @@ export default class RankingScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
+    this.rankings = await this.fetchRankings();
     this.drawTable(W, H);
 
     makeBtn(this, W / 2, H * 0.9, 'BACK', () => {
@@ -91,6 +39,23 @@ export default class RankingScene extends Phaser.Scene {
         this.scene.start(this.from);
       }
     });
+  }
+
+  async fetchRankings() {
+    try {
+      const res = await fetch('http://localhost:8080/api/records/rankings');
+      const data = await res.json();
+
+      return data.map((record, idx) => ({
+        rank: idx + 1,
+        name: record.playerName,
+        distance: record.distance,
+        playedAt: record.playedAt,
+      }));
+    } catch (err) {
+      console.error('랭킹 조회 실패:', err);
+      return [];
+    }
   }
 
   drawTable(W, H) {
