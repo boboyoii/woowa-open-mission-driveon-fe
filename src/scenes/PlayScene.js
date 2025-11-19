@@ -40,8 +40,9 @@ export default class PlayScene extends Phaser.Scene {
 
     this.player = new Player(this, W / 2, H * 0.85, ASSET.CAR, this.playerName);
     this.fuelBar = new FuelBar(this, 20, 20);
-
+    this.distanceUI = new DistanceText(this);
     this.cursors = this.input.keyboard.createCursorKeys();
+
     this.roadBounds = this.roadManager.getBounds();
 
     this.obstacleManager = new ObstacleManager(this, this.roadBounds);
@@ -61,15 +62,13 @@ export default class PlayScene extends Phaser.Scene {
       null,
       this
     );
-
-    this.distanceUI = new DistanceText(this);
   }
 
   update(_, delta) {
     const dtSec = delta / 1000;
     this.player.updateDistance(dtSec);
 
-    const meters = this.player.getMeters();
+    const meters = this.player.getDistanceInMeters();
     this.distanceUI.update(meters);
 
     this.player.clampToRoad(this.roadBounds);
@@ -80,7 +79,12 @@ export default class PlayScene extends Phaser.Scene {
     this.fuelBar.setRatio(ratio);
 
     if (!this.player.fuel.hasFuel() && !this.isGameOver) {
-      this.time.delayedCall(200, () => this.goToResultScene());
+      this.isGameOver = true;
+
+      this.time.delayedCall(200, async () => {
+        await this.saveRecord();
+        this.goToResultScene();
+      });
     }
 
     this.obstacleManager.removeObstacles();
@@ -118,17 +122,33 @@ export default class PlayScene extends Phaser.Scene {
     });
   }
 
-  goToResultScene() {
-    if (this.isGameOver) return;
-    this.isGameOver = true;
+  async saveRecord() {
+    const record = {
+      playerName: this.player.getName(),
+      distance: this.player.getDistanceInMeters(),
+    };
 
+    try {
+      const res = await fetch('http://localhost:8080/api/records', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(record),
+      });
+
+      console.log(res);
+    } catch (err) {
+      console.error('기록 저장 중 오류:', err);
+    }
+  }
+
+  goToResultScene() {
     this.game.renderer.snapshot((image) => {
       const dataURL = image.src;
 
       this.scene.start(SCENE.RESULT, {
         screenshot: dataURL,
-        playerName: this.playerName,
-        finalDistance: this.player.getMeters(),
+        playerName: this.player.getName(),
+        finalDistance: this.player.getDistanceInMeters(),
       });
     });
   }

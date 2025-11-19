@@ -2,12 +2,12 @@ import { GAME_CONFIG } from '../core/constants.js';
 import Fuel from './Fuel.js';
 
 export default class Player {
-  constructor(scene, x, y, texture, nickname) {
+  constructor(scene, x, y, texture, name) {
     this.scene = scene;
-    this.nickname = nickname;
+    this.name = name;
 
     this.car = this.createCar(x, y, texture);
-    this.nameText = this.createNameText(nickname);
+    this.nameText = this.createNameText(name);
 
     this.initPlayState();
   }
@@ -19,9 +19,9 @@ export default class Player {
       .setImmovable(false);
   }
 
-  createNameText(nickname) {
+  createNameText(name) {
     return this.scene.add
-      .text(20, 45, nickname, {
+      .text(20, 45, name, {
         fontSize: '20px',
         color: '#ffffff',
         fontFamily: 'Pretendard, sans-serif',
@@ -35,6 +35,14 @@ export default class Player {
     const { max, drainPerSec } = GAME_CONFIG.fuel;
     this.fuel = new Fuel(max, drainPerSec);
     this.distance = 0;
+  }
+
+  getName() {
+    return this.name;
+  }
+
+  getDistanceInMeters() {
+    return Math.floor(this.distance / 50);
   }
 
   moveByInput(key) {
@@ -71,9 +79,5 @@ export default class Player {
   updateDistance(dtSec) {
     const speed = GAME_CONFIG.obstacle.speedY;
     this.distance += speed * dtSec;
-  }
-
-  getMeters() {
-    return Math.floor(this.distance / 50);
   }
 }
