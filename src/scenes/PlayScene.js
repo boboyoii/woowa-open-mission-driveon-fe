@@ -129,13 +129,14 @@ export default class PlayScene extends Phaser.Scene {
     };
 
     try {
-      const res = await fetch('http://localhost:8080/api/records', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(record),
-      });
-
-      console.log(res);
+      const res = await fetch(
+        'https://woowa-open-mission-driveon-be-production.up.railway.app/api/records',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(record),
+        }
+      );
     } catch (err) {
       console.error('기록 저장 중 오류:', err);
     }

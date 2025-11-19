@@ -43,7 +43,9 @@ export default class RankingScene extends Phaser.Scene {
 
   async fetchRankings() {
     try {
-      const res = await fetch('http://localhost:8080/api/records/rankings');
+      const res = await fetch(
+        'https://woowa-open-mission-driveon-be-production.up.railway.app/api/records/rankings'
+      );
       const data = await res.json();
 
       return data.map((record, idx) => ({
