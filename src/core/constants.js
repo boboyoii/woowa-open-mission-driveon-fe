@@ -2,6 +2,7 @@ export const SCENE = {
   HOME: 'HomeScene',
   PLAY: 'PlayScene',
   RESULT: 'ResultScene',
+  RANKING: 'RankingScene',
 };
 
 export const ASSET = {

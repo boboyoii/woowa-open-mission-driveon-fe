@@ -9,6 +9,7 @@ import FuelManager from '../managers/FuelManager.js';
 import ObstacleManager from '../managers/ObstacleManager.js';
 import { RoadManager } from '../managers/RoadManager.js';
 import Player from '../objects/Player.js';
+import DistanceText from '../ui/DistanceText.js';
 import FuelBar from '../ui/FuelBar.js';
 
 export default class PlayScene extends Phaser.Scene {
@@ -39,8 +40,9 @@ export default class PlayScene extends Phaser.Scene {
 
     this.player = new Player(this, W / 2, H * 0.85, ASSET.CAR, this.playerName);
     this.fuelBar = new FuelBar(this, 20, 20);
-
+    this.distanceUI = new DistanceText(this);
     this.cursors = this.input.keyboard.createCursorKeys();
+
     this.roadBounds = this.roadManager.getBounds();
 
     this.obstacleManager = new ObstacleManager(this, this.roadBounds);
@@ -63,17 +65,28 @@ export default class PlayScene extends Phaser.Scene {
   }
 
   update(_, delta) {
-    const sec = delta / 1000;
-
     this.player.clampToRoad(this.roadBounds);
     this.player.moveByInput(this.cursors);
 
-    this.player.updateFuel(sec);
+    if (this.isGameOver) return;
+
+    const dtSec = delta / 1000;
+    this.player.updateDistance(dtSec);
+
+    const meters = this.player.getDistanceInMeters();
+    this.distanceUI.update(meters);
+
+    this.player.updateFuel(dtSec);
     const ratio = this.player.fuel.ratio();
     this.fuelBar.setRatio(ratio);
 
     if (!this.player.fuel.hasFuel() && !this.isGameOver) {
-      this.time.delayedCall(200, () => this.goToResultScene());
+      this.isGameOver = true;
+
+      this.time.delayedCall(200, () => {
+        this.saveRecord();
+        this.goToResultScene();
+      });
     }
 
     this.obstacleManager.removeObstacles();
@@ -111,16 +124,34 @@ export default class PlayScene extends Phaser.Scene {
     });
   }
 
-  goToResultScene() {
-    if (this.isGameOver) return;
-    this.isGameOver = true;
+  async saveRecord() {
+    const record = {
+      playerName: this.player.getName(),
+      distance: this.player.getDistanceInMeters(),
+    };
 
+    try {
+      const res = await fetch(
+        'https://woowa-open-mission-driveon-be-production.up.railway.app/api/records',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(record),
+        }
+      );
+    } catch (err) {
+      console.error('기록 저장 중 오류:', err);
+    }
+  }
+
+  goToResultScene() {
     this.game.renderer.snapshot((image) => {
       const dataURL = image.src;
 
       this.scene.start(SCENE.RESULT, {
         screenshot: dataURL,
-        playerName: this.playerName,
+        playerName: this.player.getName(),
+        finalDistance: this.player.getDistanceInMeters(),
       });
     });
   }

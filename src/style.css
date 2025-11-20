@@ -25,7 +25,7 @@ canvas {
 
 .nickname-input {
   font-size: 20px;
-  padding: 8px;
+  padding: 12px 8px;
   width: 170px;
   outline-color: green;
   text-align: center;

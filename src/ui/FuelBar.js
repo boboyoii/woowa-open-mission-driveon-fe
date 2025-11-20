@@ -51,7 +51,6 @@ export default class FuelBar {
     this.#showFloatingText({
       value: `+${amount}`,
       color: '#42ffe9',
-      withPop: true,
     });
   }
 
@@ -59,7 +58,6 @@ export default class FuelBar {
     this.#showFloatingText({
       value: `-${damage}`,
       color: '#ff426f',
-      withPop: false,
     });
   }
 
@@ -89,16 +87,5 @@ export default class FuelBar {
       ease: 'Expo.out',
       onComplete: () => text.destroy(),
     });
-
-    if (withPop) {
-      this.scene.tweens.add({
-        targets: this.container,
-        scaleX: 1.18,
-        scaleY: 1.22,
-        yoyo: true,
-        duration: 160,
-        ease: 'Back.out(2)',
-      });
-    }
   }
 }

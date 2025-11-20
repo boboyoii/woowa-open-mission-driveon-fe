@@ -18,7 +18,7 @@ export default class HomeScene extends Phaser.Scene {
     this.bg = this.add.image(W / 2, H / 2, ASSET.HOME_BG);
     this.bg.setDisplaySize(W, H);
 
-    this.nameInput = this.add.dom(W / 2.15, H * 0.54, 'input');
+    this.nameInput = this.add.dom(W / 2.18, H * 0.54, 'input');
 
     const el = this.nameInput.node;
     el.setAttribute('type', 'text');
@@ -33,6 +33,10 @@ export default class HomeScene extends Phaser.Scene {
       }
 
       this.scene.start(SCENE.PLAY, { playerName });
+    });
+
+    makeBtn(this, W / 2, H * 0.85, 'RANKINGS', () => {
+      this.scene.start(SCENE.RANKING, { from: SCENE.HOME });
     });
   }
 }

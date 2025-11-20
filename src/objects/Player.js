@@ -2,20 +2,26 @@ import { GAME_CONFIG } from '../core/constants.js';
 import Fuel from './Fuel.js';
 
 export default class Player {
-  constructor(scene, x, y, texture, nickname) {
+  constructor(scene, x, y, texture, name) {
     this.scene = scene;
-    this.nickname = nickname;
+    this.name = name;
 
-    this.car = scene.physics.add
+    this.car = this.createCar(x, y, texture);
+    this.nameText = this.createNameText(name);
+
+    this.initPlayState();
+  }
+
+  createCar(x, y, texture) {
+    return this.scene.physics.add
       .image(x, y, texture)
       .setScale(GAME_CONFIG.player.scale)
       .setImmovable(false);
+  }
 
-    const { max, drainPerSec } = GAME_CONFIG.fuel;
-    this.fuel = new Fuel(max, drainPerSec);
-
-    this.nameText = scene.add
-      .text(20, 45, nickname, {
+  createNameText(name) {
+    return this.scene.add
+      .text(20, 45, name, {
         fontSize: '20px',
         color: '#ffffff',
         fontFamily: 'Pretendard, sans-serif',
@@ -23,8 +29,20 @@ export default class Player {
         strokeThickness: 3,
       })
       .setDepth(1000);
+  }
 
-    this.nameWidth = this.nameText.displayWidth;
+  initPlayState() {
+    const { max, drainPerSec } = GAME_CONFIG.fuel;
+    this.fuel = new Fuel(max, drainPerSec);
+    this.distance = 0;
+  }
+
+  getName() {
+    return this.name;
+  }
+
+  getDistanceInMeters() {
+    return Math.floor(this.distance / 50);
   }
 
   moveByInput(key) {
@@ -46,8 +64,8 @@ export default class Player {
     );
   }
 
-  updateFuel(sec) {
-    this.fuel.consumeByTime(sec);
+  updateFuel(dtSec) {
+    this.fuel.consumeByTime(dtSec);
   }
 
   hitObstacle(damage) {
@@ -56,5 +74,10 @@ export default class Player {
 
   gainFuel(amount) {
     this.fuel.refuel(amount);
+  }
+
+  updateDistance(dtSec) {
+    const speed = GAME_CONFIG.obstacle.speedY;
+    this.distance += speed * dtSec;
   }
 }
