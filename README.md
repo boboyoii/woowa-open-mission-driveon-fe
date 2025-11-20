@@ -9,7 +9,7 @@ DriveOn은 자동차가 연료가 떨어지기 전까지 얼마나 멀리 달릴
 또한 단순히 게임만 동작하는 것이 아니라 플레이어의 기록을 서버와 연결해 실제 DB에 저장하고 조회하는 기능까지
 프론트엔드–백엔드–배포까지 이어지는 전체 개발 흐름을 경험해보는 것을 목표로 했습니다.
 
-<img src="https://github.com/user-attachments/assets/ed8ee456-6466-45df-aa29-2399394354f8" width="300">
+<img src="https://github.com/user-attachments/assets/e5eb53d7-f0b5-404c-a6fc-85353708133f" width="300">
 
 ## 기술 스택
 
