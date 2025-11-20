@@ -65,14 +65,16 @@ export default class PlayScene extends Phaser.Scene {
   }
 
   update(_, delta) {
+    this.player.clampToRoad(this.roadBounds);
+    this.player.moveByInput(this.cursors);
+
+    if (this.isGameOver) return;
+
     const dtSec = delta / 1000;
     this.player.updateDistance(dtSec);
 
     const meters = this.player.getDistanceInMeters();
     this.distanceUI.update(meters);
-
-    this.player.clampToRoad(this.roadBounds);
-    this.player.moveByInput(this.cursors);
 
     this.player.updateFuel(dtSec);
     const ratio = this.player.fuel.ratio();
@@ -81,8 +83,8 @@ export default class PlayScene extends Phaser.Scene {
     if (!this.player.fuel.hasFuel() && !this.isGameOver) {
       this.isGameOver = true;
 
-      this.time.delayedCall(200, async () => {
-        await this.saveRecord();
+      this.time.delayedCall(200, () => {
+        this.saveRecord();
         this.goToResultScene();
       });
     }
