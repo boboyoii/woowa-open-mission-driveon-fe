@@ -2,6 +2,7 @@ import { preloadHomeBGImage } from '../core/assets.js';
 import { ASSET, SCENE } from '../core/constants.js';
 import { makeBtn } from '../core/ui.js';
 import '../style.css';
+import { validatePlayerName } from '../utils/validation.js';
 
 export default class HomeScene extends Phaser.Scene {
   constructor() {
@@ -26,13 +27,15 @@ export default class HomeScene extends Phaser.Scene {
     el.classList.add('nickname-input');
 
     makeBtn(this, W / 2, H * 0.75, 'START', () => {
-      const playerName = this.nameInput.node.value.trim();
-      if (!playerName) {
-        alert('이름을 입력해주세요!');
+      const inputName = this.nameInput.node.value;
+      const result = validatePlayerName(inputName);
+
+      if (!result.isValid) {
+        alert(result.errorMessage);
         return;
       }
 
-      this.scene.start(SCENE.PLAY, { playerName });
+      this.scene.start(SCENE.PLAY, { playerName: result.playerName });
     });
 
     makeBtn(this, W / 2, H * 0.85, 'RANKINGS', () => {
