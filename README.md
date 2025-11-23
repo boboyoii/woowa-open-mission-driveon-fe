@@ -50,7 +50,7 @@ DriveOn은 자동차가 연료가 떨어지기 전까지 얼마나 멀리 달릴
 
 #### 장애물 생성
 
-- [x] 일정 시간 간격으로 도로 위에 장애물이 무작위 위치에 생성된다.
+- [x] 일정 시간 간격으로 도로 위에 장애물이 무작위 위치에 생성된다. (<img width="20" height="48" alt="Image" src="https://github.com/user-attachments/assets/15cf6271-7da5-4348-8147-d827bcb578e1" />, <img width="20" alt="Image" src="https://github.com/user-attachments/assets/a60c52f0-b372-4d72-bcf6-9ffc5d505cc1" />, <img width="25"  alt="Image" src="https://github.com/user-attachments/assets/29c53e9f-8c80-40e4-9d8e-5e5b4c5e1c80" />, <img width="25" alt="Image" src="https://github.com/user-attachments/assets/5fb47ff1-1d59-4299-8a58-bbf03e18e75e" />)
 - [x] 장애물은 위에서 아래로 일정 속도로 내려온다.
 
 #### 장애물 충돌
@@ -64,7 +64,7 @@ DriveOn은 자동차가 연료가 떨어지기 전까지 얼마나 멀리 달릴
 
 #### 연료 아이템 생성
 
-- [x] 도로 위에 연료 아이템이 무작위 위치에 생성된다.
+- [x] 도로 위에 연료 아이템이 무작위 위치에 생성된다. (<img width="25" alt="Image" src="https://github.com/user-attachments/assets/f7dceaaf-0d2d-4142-beb3-b9501b84a6bc" />)
 - [x] 연료 아이템은 위에서 아래로 일정 속도로 내려온다.
 
 #### 연료 획득
